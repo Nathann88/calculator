@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>
+      calculator
+    </title>
+    <style>
+      body {
+        background-color: black;
+      }
+
+      .paragraph {
+        min-height: 50px;
+        color: white;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 40px;
+        margin-bottom: 0px;
+        margin-top: 25px;
+      }
+
+      .numberButton {
+        border: none;
+        background-color: rgb(49, 47, 47);
+        border-radius: 25px;
+        height: 50px;
+        width: 50px;
+        font-size: 20px;
+        color: white;
+        margin: 1px;
+      }
+
+      .calculateButton {
+        border: none;
+        background-color: rgb(236, 153, 9);
+        border-radius: 25px;
+        height: 50px;
+        width: 50px;
+        font-size: 20px;
+        color: white;
+        margin: 1px;
+      }
+      
+      .clearButton {
+        border: none;
+        background-color: rgb(49, 47, 47);
+        border-radius: 25px;
+        height: 50px;
+        width: 50px;
+        font-size: 15px;
+        color: white;
+        margin: 1px;
+      }
+
+    </style>
+  </head>
+  <body>
+    <p class="js-paragraph paragraph"></p>
+    <p>
+      <button class="numberButton" onclick="
+        updateCalculation('1');
+        showCalculation (calculation);
+      ">1</button>
+
+      <button class="numberButton" onclick="
+        updateCalculation('2');
+        showCalculation (calculation);
+      ">2</button>
+
+      <button class="numberButton" onclick="
+        updateCalculation('3');
+        showCalculation (calculation);
+      ">3</button>
+
+      <button class="calculateButton" onclick="
+        updateCalculation(' + ');
+        showCalculation (calculation);
+      ">+</button>
+    </p>
+
+    <p>
+      <button class="numberButton" onclick="
+        updateCalculation('4');
+        showCalculation (calculation);
+      ">4</button>
+
+      <button class="numberButton" onclick="
+        updateCalculation('5');
+        showCalculation (calculation);
+      ">5</button>
+
+      <button class="numberButton" onclick="
+        updateCalculation('6');
+        showCalculation (calculation);
+      ">6</button>
+
+      <button class="calculateButton" onclick="
+        updateCalculation(' - ');
+        showCalculation (calculation);
+      ">-</button>
+    </p>
+
+    <p>
+      <button class="numberButton" onclick="
+        updateCalculation('7');
+        showCalculation (calculation);
+      ">7</button>
+
+      <button class="numberButton" onclick="
+        updateCalculation('8');
+        showCalculation (calculation);
+      ">8</button>
+
+      <button class="numberButton" onclick="
+        updateCalculation('9');
+        showCalculation (calculation);
+      ">9</button>
+
+      <button class="calculateButton" onclick="
+        updateCalculation(' * ');
+        showCalculation (calculation);
+      ">*</button>
+    </p>
+
+    <p>
+      <button class="numberButton" onclick="
+        updateCalculation('0');
+        showCalculation (calculation);
+      ">0</button>
+
+      <button class="numberButton" onclick="
+        updateCalculation('.');
+        showCalculation (calculation);
+      ">.</button>
+
+      <button class="numberButton" onclick="
+        // Note: eval() takes a string and runs it as code.
+        // Avoid using eval() in real world projects since
+        // it can potentially be given harmful code to run.
+        // Only use eval() for learning purposes.
+        calculation = eval(calculation);
+        console.log(calculation);
+        showCalculation (calculation);
+
+        localStorage.setItem('calculation', JSON.stringify(calculation));
+      ">=</button>
+
+      <button class="calculateButton" onclick="
+        updateCalculation(' / ');
+        showCalculation (calculation);
+      ">/</button>
+    </p>
+
+    <p>
+      <button class="clearButton"  onclick="
+        calculation = '';
+        console.log('Cleared!');
+        localStorage.removeItem('calculation');
+        showCalculation (calculation);
+      ">Clear</button>
+    </p>
+
+    <script>
+
+      let calculation = JSON.parse(localStorage.getItem('calculation')) || '';
+
+      showCalculation (calculation);
+
+      function showCalculation (calculation) {
+        const calculationNumber = document.querySelector('.js-paragraph');
+
+        calculationNumber.innerHTML = calculation;
+      }
+    
+  
+      function updateCalculation(value) {
+        calculation += value;
+        console.log(calculation);
+      }
+    </script>
+  </body>
+</html>
