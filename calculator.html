@@ -10,46 +10,63 @@
         background-color: black;
       }
 
+      p {
+        margin: 5px;
+      }
+
       .paragraph {
-        min-height: 50px;
+        min-height: 100px;
         color: white;
         font-family: Arial, Helvetica, sans-serif;
-        font-size: 40px;
+        font-size: 70px;
         margin-bottom: 0px;
-        margin-top: 25px;
+        margin-top: 40px;
       }
 
       .numberButton {
         border: none;
         background-color: rgb(49, 47, 47);
-        border-radius: 25px;
-        height: 50px;
-        width: 50px;
-        font-size: 20px;
+        border-radius: 40px;
+        height: 80px;
+        width: 80px;
+        font-size: 30px;
         color: white;
-        margin: 1px;
+        margin: 2px;
+      }
+
+        button {
+        vertical-align: top;
+        box-sizing: border-box;
+      }
+
+      .imageButton {
+        background-image: url('images/fotocalculator.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        padding: 0;
       }
 
       .calculateButton {
         border: none;
         background-color: rgb(236, 153, 9);
-        border-radius: 25px;
-        height: 50px;
-        width: 50px;
-        font-size: 20px;
+        border-radius: 40px;
+        height: 80px;
+        width: 80px;
+        font-size: 30px;
         color: white;
-        margin: 1px;
+        margin: 2px;
       }
       
       .clearButton {
         border: none;
-        background-color: rgb(49, 47, 47);
-        border-radius: 25px;
-        height: 50px;
-        width: 50px;
-        font-size: 15px;
+        background-color: rgb(84, 80, 80);
+        border-radius: 40px;
+        height: 80px;
+        width: 80px;
+        font-size: 25px;
         color: white;
-        margin: 1px;
+        margin: 2px;
       }
 
     </style>
@@ -57,47 +74,34 @@
   <body>
     <p class="js-paragraph paragraph"></p>
     <p>
-      <button class="numberButton" onclick="
-        updateCalculation('1');
+      <button class="clearButton"  onclick="
+        calculation = '';
+        console.log('Cleared!');
+        localStorage.removeItem('calculation');
         showCalculation (calculation);
-      ">1</button>
+      ">AC</button>
 
-      <button class="numberButton" onclick="
-        updateCalculation('2');
-        showCalculation (calculation);
-      ">2</button>
+      <button class="clearButton" onclick="
+        toggleSign();
+      ">
+        +/-
+      </button>
 
-      <button class="numberButton" onclick="
-        updateCalculation('3');
-        showCalculation (calculation);
-      ">3</button>
+      <button class="clearButton" onclick="
+        updateCalculation('%');
+        showCalculation(calculation);
+      ">
+        %
+      </button>
 
-      <button class="calculateButton" onclick="
-        updateCalculation(' + ');
+      <button class="clearButton" onclick="
+        const expression = convertPercentages(calculation);
+        calculation = eval(expression);
+        console.log(calculation);
         showCalculation (calculation);
-      ">+</button>
-    </p>
 
-    <p>
-      <button class="numberButton" onclick="
-        updateCalculation('4');
-        showCalculation (calculation);
-      ">4</button>
-
-      <button class="numberButton" onclick="
-        updateCalculation('5');
-        showCalculation (calculation);
-      ">5</button>
-
-      <button class="numberButton" onclick="
-        updateCalculation('6');
-        showCalculation (calculation);
-      ">6</button>
-
-      <button class="calculateButton" onclick="
-        updateCalculation(' - ');
-        showCalculation (calculation);
-      ">-</button>
+        localStorage.setItem('calculation', JSON.stringify(calculation));
+      ">=</button>
     </p>
 
     <p>
@@ -124,6 +128,53 @@
 
     <p>
       <button class="numberButton" onclick="
+        updateCalculation('4');
+        showCalculation (calculation);
+      ">4</button>
+
+      <button class="numberButton" onclick="
+        updateCalculation('5');
+        showCalculation (calculation);
+      ">5</button>
+
+      <button class="numberButton" onclick="
+        updateCalculation('6');
+        showCalculation (calculation);
+      ">6</button>
+
+      <button class="calculateButton" onclick="
+        updateCalculation(' - ');
+        showCalculation (calculation);
+      ">-</button>
+    </p>
+
+    <p>
+      <button class="numberButton" onclick="
+        updateCalculation('1');
+        showCalculation (calculation);
+      ">1</button>
+
+      <button class="numberButton" onclick="
+        updateCalculation('2');
+        showCalculation (calculation);
+      ">2</button>
+
+      <button class="numberButton" onclick="
+        updateCalculation('3');
+        showCalculation (calculation);
+      ">3</button>
+
+      <button class="calculateButton" onclick="
+        updateCalculation(' + ');
+        showCalculation (calculation);
+      ">+</button>
+    </p>
+
+    <p>
+      <button class="numberButton imageButton">
+      </button>
+
+      <button class="numberButton" onclick="
         updateCalculation('0');
         showCalculation (calculation);
       ">0</button>
@@ -133,32 +184,12 @@
         showCalculation (calculation);
       ">.</button>
 
-      <button class="numberButton" onclick="
-        // Note: eval() takes a string and runs it as code.
-        // Avoid using eval() in real world projects since
-        // it can potentially be given harmful code to run.
-        // Only use eval() for learning purposes.
-        calculation = eval(calculation);
-        console.log(calculation);
-        showCalculation (calculation);
-
-        localStorage.setItem('calculation', JSON.stringify(calculation));
-      ">=</button>
-
       <button class="calculateButton" onclick="
         updateCalculation(' / ');
         showCalculation (calculation);
       ">/</button>
     </p>
 
-    <p>
-      <button class="clearButton"  onclick="
-        calculation = '';
-        console.log('Cleared!');
-        localStorage.removeItem('calculation');
-        showCalculation (calculation);
-      ">Clear</button>
-    </p>
 
     <script>
 
@@ -172,12 +203,75 @@
         calculationNumber.innerHTML = calculation;
       }
     
-  
+      
       function updateCalculation(value) {
         calculation += value;
         console.log(calculation);
       }
+
+      function applyPercentage() {
+        const parts = calculation.trim().split(/([+\-*/])/);
+        const last = parts[parts.length - 1];
+
+        if (!isNaN(last)) {
+          const percentage = parseFloat(last) / 100;
+          parts[parts.length - 1] = percentage.toString();
+          calculation = parts.join('');
+          showCalculation(calculation);
+        }
+      }
+
+      function convertPercentages(input) {
+        // Replace things like "100+5%" with "100+(100*0.05)"
+        return input.replace(/(\d+(\.\d+)?)(%)?/g, (match, number, _, percentSign, offset, string) => {
+          const prevChar = string[offset - 1];
+          if (percentSign === '%' && /[+\-*/]/.test(prevChar)) {
+            // Replace with: (previousNumber * percent)
+            // We'll estimate the base as the number before the operator
+            // (Not perfect, but a decent approximation)
+            const baseMatch = string.slice(0, offset).match(/(\d+(\.\d+)?)(?=[+\-*/])$/);
+            const base = baseMatch ? baseMatch[1] : '1';
+            return `(${base}*${number}/100)`;
+          } else if (percentSign === '%') {
+            // Just standalone number%
+            return `(${number}/100)`;
+          } else {
+            return match;
+          }
+        });
+      }
+
+      function toggleSign() {
+        // Split the calculation by operators to get last number
+        const parts = calculation.trim().split(/([+\-*/])/);
+        
+        // Find last number index (skip empty strings)
+        let lastIndex = parts.length - 1;
+        while (lastIndex >= 0 && parts[lastIndex].trim() === '') {
+          lastIndex--;
+        }
+        
+        if (lastIndex < 0) return; // nothing to toggle
+
+        let last = parts[lastIndex];
+
+        // Toggle sign:
+        if (last.startsWith('-')) {
+          // Remove the leading '-'
+          last = last.slice(1);
+        } else {
+          // Add '-' if not zero
+          if (last !== '0') last = '-' + last;
+        }
+
+        // Replace last number with toggled sign
+        parts[lastIndex] = last;
+
+        // Rebuild calculation string (join without extra spaces)
+        calculation = parts.join('');
+        showCalculation(calculation);
+      }
+
     </script>
   </body>
-
 </html>
